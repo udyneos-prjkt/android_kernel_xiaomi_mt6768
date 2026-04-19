@@ -21,6 +21,7 @@
 #include <linux/module.h>
 #include <linux/aio.h>
 #include <linux/mm.h>
+#include <linux/prefer_silver.h>
 #include <linux/swap.h>
 #include <linux/slab.h>
 #include <linux/sysctl.h>
@@ -539,6 +540,44 @@ static struct ctl_table kern_table[] = {
 		.mode		= 0644,
 		.proc_handler	= proc_dointvec,
 	},
+#endif /* CONFIG_NUMA_BALANCING */
+#ifdef CONFIG_OPLUS_PREFER_SILVER
+	{
+		.procname	= "prefer_silver",
+		.data		= &sysctl_prefer_silver,
+		.maxlen		= sizeof(int),
+		.mode		= 0644,
+		.proc_handler	= proc_dointvec_minmax,
+		.extra1		= &zero,
+		.extra2		= &one,
+	},
+	{
+		.procname	= "heavy_task_thresh",
+		.data		= &sysctl_heavy_task_thresh,
+		.maxlen		= sizeof(int),
+		.mode		= 0644,
+		.proc_handler	= proc_dointvec_minmax,
+		.extra1		= &zero,
+		.extra2		= &one_hundred,
+	},
+	{
+		.procname	= "silver_cpu_util_thresh",
+		.data		= &sysctl_cpu_util_thresh,
+		.maxlen		= sizeof(int),
+		.mode		= 0644,
+		.proc_handler	= proc_dointvec_minmax,
+		.extra1		= &zero,
+		.extra2		= &one_hundred,
+	},
+	{
+		.procname	= "silver_trigger_freq",
+		.data		= &sysctl_silver_trigger_freq,
+		.maxlen		= sizeof(int),
+		.mode		= 0644,
+		.proc_handler	= proc_dointvec,
+	},
+#endif /* CONFIG_OPLUS_PREFER_SILVER */
+#ifdef CONFIG_NUMA_BALANCING
 	{
 		.procname	= "numa_balancing_scan_period_min_ms",
 		.data		= &sysctl_numa_balancing_scan_period_min,

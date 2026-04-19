@@ -45,6 +45,7 @@
 #include "eas_plus.h"
 #include "hmp.h"
 
+#include <linux/prefer_silver.h>
 /*
  * Targeted preemption latency for CPU-bound tasks:
  *
@@ -5315,7 +5316,7 @@ static void walt_fixup_cumulative_runnable_avg_fair(struct rq *rq,
 	s64 task_load_delta = (s64)new_task_load - p->ravg.demand;
 
 #ifdef CONFIG_SCHED_BORE
-	if (task_sleep) {
+	if (DEQUEUE_SLEEP) {
 		cfs_rq = cfs_rq_of(se);
 		if (cfs_rq->curr == se)
 			update_curr(cfs_rq);
@@ -7277,8 +7278,7 @@ skip_spare:
 /*
  * find_idlest_group_cpu - find the idlest cpu among the cpus in group.
  */
-static int
-find_idlest_group_cpu(struct sched_group *group, struct task_struct *p, int this_cpu)
+static int find_idlest_group_cpu(struct sched_group *group, struct task_struct *p, int this_cpu)
 {
 	unsigned long load, min_load = ULONG_MAX;
 	unsigned int min_exit_latency = UINT_MAX;
@@ -8313,6 +8313,12 @@ static int find_energy_efficient_cpu(struct sched_domain *sd,
 			return cpu;
 		}
 	}
+
+	if (sysctl_prefer_silver && prefer_silver_check_task_util(p)) {
+               int best = find_best_silver_cpu(p);
+               if (best >= 0)
+                       return best;
+       }
 
 	/* prepopulate energy diff environment */
 	eenv = get_eenv(p, prev_cpu);
