@@ -11763,7 +11763,7 @@ int wlanQueryRateByTable(uint32_t txmode, uint32_t rate,
 	if (txmode == TX_RATE_MODE_CCK) { /* 11B */
 		ucMaxSize = ARRAY_SIZE(g_rCckDataRateMappingTable.rate);
 		if (rate >= ucMaxSize) {
-			DBGLOG(SW4, ERROR, "rate error for CCK: %u\n", rate);
+		//DBGLOG(SW4, ERROR, "rate error for CCK: %u\n", rate);
 			return -1;
 		}
 		u4CurRate = g_rCckDataRateMappingTable.rate[rate];

@@ -730,7 +730,7 @@ int mtkts_bts_get_hw_temp(void)
 
 	bts_cur_temp = t_ret;
 
-	if (t_ret > 40000)	/* abnormal high temp */
+	if (t_ret > 50000)	/* abnormal high temp */
 		mtkts_bts_printk("T_AP=%d\n", t_ret);
 
 	mtkts_bts_dprintk("[%s] T_AP, %d\n", __func__, t_ret);
