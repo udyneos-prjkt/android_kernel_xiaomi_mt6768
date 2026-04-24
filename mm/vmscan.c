@@ -183,7 +183,7 @@ unsigned long sysctl_clean_min_kbytes __read_mostly = CONFIG_CLEAN_MIN_KBYTES;
 /*
  * From 0 .. 100.  Higher means more swappy.
  */
-int vm_swappiness = 190;
+int vm_swappiness = 90;
 /*
  * The total number of pages which are beyond the high watermark within all
  * zones.
@@ -3978,7 +3978,7 @@ static bool age_lruvec(struct lruvec *lruvec, struct scan_control *sc,
 }
 
 /* to protect the working set of the last N jiffies */
-static unsigned long lru_gen_min_ttl __read_mostly = 5 * HZ; // 5000ms
+static unsigned long lru_gen_min_ttl __read_mostly = 20 * HZ; // 20000ms
 
 static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
 {
